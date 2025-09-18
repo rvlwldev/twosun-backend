@@ -2,11 +2,11 @@
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testMatch": ["<rootDir>/test/e2e/**/*.e2e-spec.ts"],
   "transform": {
     "^.+\\.(t|j)s$": ["ts-jest", { "tsconfig": { "module": "commonjs", "resolvePackageJsonExports": false } }]
   },
-  "moduleNameMapper": { "@/(.*)": "<rootDir>/../../src/$1" },
-  "setupFilesAfterEnv": ["<rootDir>/testcontainers.ts"],
+  "moduleNameMapper": { "@/(.*)": "<rootDir>/src/$1" },
+  "setupFilesAfterEnv": ["<rootDir>/test/e2e/setup/testcontainers.ts"],
   "testTimeout": 60000
 }
