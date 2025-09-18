@@ -5,9 +5,10 @@ import { winstonConfig } from '@/config/winston.config';
 import { APP_FILTER } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { ExceptionsFilter } from '@/common/exception.filter';
+import { UsersModule } from '@/modules/users/user.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(databaseConfig), WinstonModule.forRoot(winstonConfig)],
+  imports: [TypeOrmModule.forRoot(databaseConfig), WinstonModule.forRoot(winstonConfig), UsersModule],
   controllers: [],
   providers: [{ provide: APP_FILTER, useClass: ExceptionsFilter }],
 })
