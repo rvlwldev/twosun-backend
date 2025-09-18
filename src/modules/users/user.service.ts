@@ -26,7 +26,13 @@ export class UserService {
     return this.repo.save(this.repo.create(req));
   }
 
-  async findUserById(id: string) {
-    return await this.repo.findOne({ where: { id } });
+  async findUserById(id: string): Promise<User> {
+    const user = await this.repo.findOne({ where: { id } });
+
+    if (!user) {
+      throw new NotFoundException('해당 ID를 찾을 수 없습니다.');
+    }
+
+    return user;
   }
 }

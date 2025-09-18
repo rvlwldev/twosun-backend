@@ -51,4 +51,8 @@ export class User {
   private async encryptPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
+
+  isPassword(password: string) {
+    return bcrypt.compare(password, this.password);
+  }
 }

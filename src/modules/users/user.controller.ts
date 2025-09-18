@@ -1,9 +1,10 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UserCreateRequest } from './user.request';
 import { UserService } from './user.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from '@/modules/users/user.entity';
 
+@ApiTags('사용자')
 @Controller('users')
 export class UserController {
   constructor(private readonly service: UserService) {}
@@ -17,5 +18,13 @@ export class UserController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async postUser(@Body() req: UserCreateRequest): Promise<User> {
     return this.service.createUser(req);
+  }
+
+  @ApiOperation({ summary: '사용자 프로필 조회' })
+  @ApiResponse({ status: HttpStatus.OK, description: '사용자 프로필 조회 성공', type: User })
+  @ApiResponse({ status: HttpStatus.NOT_FOUND, description: '사용자를 찾을 수 없음' })
+  @Get(':id')
+  async getUserProfile(@Param('id') id: string): Promise<User> {
+    return this.service.findUserById(id);
   }
 }
