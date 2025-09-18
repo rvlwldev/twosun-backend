@@ -10,6 +10,6 @@ export const databaseConfig: TypeOrmModuleOptions = {
   username: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: [],
+  autoLoadEntities: true,
   synchronize: true,
 };
