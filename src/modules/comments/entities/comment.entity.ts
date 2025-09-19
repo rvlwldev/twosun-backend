@@ -11,7 +11,6 @@ import {
 } from 'typeorm';
 import { User } from '@/modules/users/user.entity';
 import { Tweet } from '@/modules/tweets/entities/tweet.entity';
-import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Entity('comments')
 @Index(['tweet', 'createdAt'])
@@ -25,7 +24,7 @@ export class Comment {
 
   @ManyToOne(() => Comment, (comment) => comment.children, { nullable: true })
   @JoinColumn({ name: 'parentId' })
-  parent: Comment;
+  parent: Comment | null;
 
   @OneToMany(() => Comment, (comment) => comment.parent, { cascade: true })
   children: Comment[];
