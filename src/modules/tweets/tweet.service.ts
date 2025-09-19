@@ -34,12 +34,11 @@ export class TweetService {
   }
 
   async findTweetById(id: number): Promise<Tweet> {
-    return this.repo.findOneByOrFail({ id }).catch((err) => {
-      if (err instanceof NotFoundException) {
-        throw new NotFoundException(this.NOT_FOUND_ERROR_MESSAGE);
-      }
-      throw err;
-    });
+    const tweet = await this.repo.findOne({ where: { id }, relations: { author: true, images: true } });
+
+    if (!tweet) throw new NotFoundException(this.NOT_FOUND_ERROR_MESSAGE);
+
+    return tweet;
   }
 
   async findTweetByIdWithAllRelations(id: number): Promise<Tweet & { likeCount: number; commentCount: number }> {
@@ -85,17 +84,11 @@ export class TweetService {
   }
 
   async likeTweet(userId: string, tweetId: number): Promise<void> {
-    this.eventEmitter.emit(
-      'tweet.liked',
-      new TweetLikeEvent(userId, tweetId),
-    );
+    this.eventEmitter.emit('tweet.liked', new TweetLikeEvent(userId, tweetId));
   }
 
   async unlikeTweet(userId: string, tweetId: number): Promise<void> {
-    this.eventEmitter.emit(
-      'tweet.unliked',
-      new TweetLikeEvent(userId, tweetId),
-    );
+    this.eventEmitter.emit('tweet.unliked', new TweetLikeEvent(userId, tweetId));
   }
 
   async updateTweetContent(userId: string, tweetId: number, content: string): Promise<Tweet> {
