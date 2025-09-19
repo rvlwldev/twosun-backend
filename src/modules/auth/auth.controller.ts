@@ -1,6 +1,6 @@
 import { Controller, Post, UseGuards, Body, HttpCode, HttpStatus, Request } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { GlobalAuthGuard } from '@/modules/auth/guards/global-auth.guard';
+import { CredentialGuard } from '@/modules/auth/guards/credential.guard';
 import { AuthService } from '@/modules/auth/auth.service';
 import { LoginRequest } from '@/modules/auth/auth-login.request';
 import { User } from '@/modules/users/user.entity';
@@ -20,7 +20,7 @@ export class AuthController {
   @ApiResponse({ status: HttpStatus.UNAUTHORIZED, description: '인증 실패' })
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(CredentialGuard)
   async login(@Request() req: { user: User }) {
     return this.service.login(req.user);
   }

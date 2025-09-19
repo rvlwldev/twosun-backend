@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { GlobalAuthGuard } from '@/modules/auth/guards/global-auth.guard';
+import { JwtGuard } from '@/modules/auth/guards/jwt.guard';
 import type { AuthenticatedRequest } from '@/modules/auth/auth-authenticated.request';
 
 import { CommentService } from './comment.service';
@@ -32,7 +32,7 @@ export class CommentController {
   @ApiResponse({ status: 404, description: '트윗 또는 부모 댓글을 찾을 수 없음' })
   @ApiBearerAuth()
   @Post('tweets/:tweetId/comments')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.CREATED)
   async postComment(
     @Param('tweetId') tweetId: number,
@@ -64,7 +64,7 @@ export class CommentController {
   @ApiResponse({ status: 404, description: '댓글을 찾을 수 없음' })
   @ApiBearerAuth()
   @Patch('comments/:commentId')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   async patchComment(
     @Param('commentId') commentId: number,
     @Body() request: UpdateCommentRequest,
@@ -82,7 +82,7 @@ export class CommentController {
   @ApiResponse({ status: 404, description: '댓글을 찾을 수 없음' })
   @ApiBearerAuth()
   @Delete('comments/:commentId')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteComment(@Param('commentId') commentId: number, @Req() req: AuthenticatedRequest): Promise<void> {
     await this.service.deleteComment(req.user.id, commentId);

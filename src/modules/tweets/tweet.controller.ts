@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-import { GlobalAuthGuard } from '@/modules/auth/guards/global-auth.guard';
+import { JwtGuard } from '@/modules/auth/guards/jwt.guard';
 import type { AuthenticatedRequest } from '@/modules/auth/auth-authenticated.request';
 
 import { Tweet } from './entities/tweet.entity';
@@ -38,7 +38,7 @@ export class TweetController {
   @ApiResponse({ status: 404, description: '사용자 또는 카테고리를 찾을 수 없음' })
   @ApiBearerAuth()
   @Post()
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.CREATED)
   async postTweet(@Body() tweetCreateRequest: TweetCreateRequest, @Req() req: AuthenticatedRequest): Promise<Tweet> {
     const { categoryId, content, imageUrls } = tweetCreateRequest;
@@ -74,7 +74,7 @@ export class TweetController {
   @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
   @ApiBearerAuth()
   @Post(':id/like')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
   async likeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
     await this.service.likeTweet(req.user.id, tweetId);
@@ -86,7 +86,7 @@ export class TweetController {
   @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
   @ApiBearerAuth()
   @Delete(':id/like')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async unlikeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
     await this.service.unlikeTweet(req.user.id, tweetId);
@@ -94,7 +94,7 @@ export class TweetController {
 
   @ApiBearerAuth()
   @Patch(':id/content')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   async patchTweetContent(
     @Param('id') id: number,
     @Body() tweetUpdateRequest: TweetUpdateContentRequest,
@@ -109,7 +109,7 @@ export class TweetController {
   @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
   @ApiBearerAuth()
   @Put(':id/images')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   async patchTweetImages(
     @Param('id') id: number,
     @Body() tweetUpdateRequest: TweetUpdateImagesRequest,
@@ -124,7 +124,7 @@ export class TweetController {
   @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
   @ApiBearerAuth()
   @Delete(':id')
-  @UseGuards(GlobalAuthGuard)
+  @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
   async deleteTweet(@Param('id') id: number, @Req() req: AuthenticatedRequest) {
     return this.service.deleteTweetById(req.user.id, id);
