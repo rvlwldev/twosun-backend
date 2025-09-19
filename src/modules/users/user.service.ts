@@ -1,6 +1,6 @@
 import { ConflictException, ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, QueryFailedError } from 'typeorm';
 import { User } from '@/modules/users/user.entity';
 import { UserCreateRequest } from '@/modules/users/user-create.request';
 
@@ -9,21 +9,27 @@ export class UserService {
   constructor(@InjectRepository(User) private readonly repo: Repository<User>) {}
 
   async createUser(req: UserCreateRequest): Promise<User> {
-    const user = await this.repo.findOne({
-      where: [{ id: req.id }, { nickname: req.nickname }],
-    });
+    try {
+      return await this.repo.save(this.repo.create(req));
+    } catch (error) {
+      if (!(error instanceof QueryFailedError)) {
+        throw error;
+      }
 
-    if (user) {
-      if (user.id == req.id) {
+      if (!error.driverError || error.driverError.code != 'ER_DUP_ENTRY') {
+        throw error;
+      }
+
+      if (error.message.includes('id')) {
         throw new ConflictException('이미 사용 중인 ID 입니다.');
       }
 
-      if (user.nickname == req.nickname) {
+      if (error.message.includes('nickname')) {
         throw new ConflictException('이미 사용 중인 닉네임입니다.');
       }
-    }
 
-    return this.repo.save(this.repo.create(req));
+      throw new ConflictException('이미 사용 중인 ID 또는 닉네임입니다.');
+    }
   }
 
   async findUserById(id: string): Promise<User> {
