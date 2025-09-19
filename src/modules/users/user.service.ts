@@ -2,7 +2,7 @@ import { ConflictException, ForbiddenException, Injectable, NotFoundException } 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '@/modules/users/user.entity';
-import { UserCreateRequest } from '@/modules/users/user.request';
+import { UserCreateRequest } from '@/modules/users/user-create.request';
 
 @Injectable()
 export class UserService {
