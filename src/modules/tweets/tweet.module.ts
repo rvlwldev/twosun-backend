@@ -6,20 +6,15 @@ import { CategoryModule } from '@/modules/categories/category.module';
 
 import { Tweet } from './entities/tweet.entity';
 import { TweetImage } from './entities/tweet-image.entity';
-import { Retweet } from './entities/retweet.entity';
 import { TweetLike } from './entities/tweet-like.entity';
-import { TweetsController } from './tweet.controller';
+import { TweetController } from './tweet.controller';
 import { TweetService } from './tweet.service';
 import { TweetEventListener } from './tweet.event.listener';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Tweet, TweetImage, Retweet, TweetLike]),
-    UserModule,
-    CategoryModule,
-  ],
-  controllers: [TweetsController],
+  imports: [TypeOrmModule.forFeature([Tweet, TweetImage, TweetLike]), UserModule, CategoryModule],
+  controllers: [TweetController],
   providers: [TweetService, TweetEventListener],
   exports: [TweetService],
 })
-export class TweetsModule {}
+export class TweetModule {}

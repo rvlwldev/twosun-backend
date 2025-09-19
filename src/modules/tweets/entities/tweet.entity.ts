@@ -13,7 +13,6 @@ import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
 import { TweetImage } from './tweet-image.entity';
 import { Comment } from '@/modules/comments/entities/comment.entity';
-import { Retweet } from '@/modules/tweets/entities/retweet.entity';
 import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Entity('tweets')
@@ -40,8 +39,8 @@ export class Tweet {
   @OneToMany(() => Comment, (comment) => comment.tweet, { cascade: true })
   comments: Comment[];
 
-  @OneToMany(() => Retweet, (retweet) => retweet.tweet, { cascade: true })
-  retweets: Retweet[];
+  // @OneToMany(() => Retweet, (retweet) => retweet.tweet, { cascade: true })
+  // retweets: Retweet[];
 
   @OneToMany(() => TweetLike, (like) => like.tweet, { cascade: true })
   likes: TweetLike[];
@@ -75,24 +74,25 @@ export class Tweet {
     this.images = this.toTweetImages(imageUrls);
   }
 
-  addRetweetByUser(user: User) {
-    if (!this.retweets) this.retweets = [];
-
-    if (this.author.id === user.id) {
-      throw new Error('자신의 트윗은 리트윗할 수 없습니다.');
-    }
-
-    if (this.retweets.some((retweet) => retweet.user.id === user.id)) {
-      throw new Error('이미 리트윗한 트윗입니다.');
-    }
-
-    const retweet = new Retweet();
-
-    retweet.user = user;
-    retweet.tweet = this;
-
-    this.retweets.push(retweet);
-  }
+  // 리트윗기능 삭제
+  // addRetweetByUser(user: User) {
+  //   if (!this.retweets) this.retweets = [];
+  //
+  //   if (this.author.id === user.id) {
+  //     throw new Error('자신의 트윗은 리트윗할 수 없습니다.');
+  //   }
+  //
+  //   if (this.retweets.some((retweet) => retweet.user.id === user.id)) {
+  //     throw new Error('이미 리트윗한 트윗입니다.');
+  //   }
+  //
+  //   const retweet = new Retweet();
+  //
+  //   retweet.user = user;
+  //   retweet.tweet = this;
+  //
+  //   this.retweets.push(retweet);
+  // }
 
   // 좋아요 기능은 에러를 던지지 않음.
   addLikeByUser(user: User): boolean {

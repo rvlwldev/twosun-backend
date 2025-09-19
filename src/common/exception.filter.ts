@@ -1,10 +1,10 @@
 import { Catch, ArgumentsHost, HttpException, HttpStatus, type LoggerService, Inject } from '@nestjs/common';
 import { BaseExceptionFilter } from '@nestjs/core';
-import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 import { Request, Response } from 'express';
+import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @Catch()
-export class ExceptionsFilter extends BaseExceptionFilter {
+export class ExceptionFilter extends BaseExceptionFilter {
   constructor(@Inject(WINSTON_MODULE_PROVIDER) private readonly logger: LoggerService) {
     super();
   }

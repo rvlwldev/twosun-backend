@@ -4,6 +4,7 @@ import { Tweet } from './tweet.entity';
 
 @Entity('tweet_images')
 @Index(['tweet'])
+@Index(['url'])
 export class TweetImage {
   @PrimaryGeneratedColumn()
   id: number;

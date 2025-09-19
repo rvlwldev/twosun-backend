@@ -4,7 +4,6 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  Index,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,7 +17,6 @@ export class User {
   seq: number;
 
   @ApiProperty({ description: '사용자 ID', example: 'testuser123' })
-  @Index()
   @Column({ unique: true })
   id: string;
 
@@ -27,7 +25,6 @@ export class User {
   name: string;
 
   @ApiProperty({ description: '닉네임', example: 'nickname' })
-  @Index()
   @Column({ unique: true })
   nickname: string;
 

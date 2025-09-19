@@ -29,7 +29,7 @@ import { TweetUpdateImagesRequest } from '@/modules/tweets/requests/tweet-update
 
 @ApiTags('트윗 (유저 트윗)')
 @Controller('tweets')
-export class TweetsController {
+export class TweetController {
   constructor(private readonly service: TweetService) {}
 
   @ApiOperation({ summary: '트윗 작성', description: '새로운 트윗을 작성합니다. 로그인한 사용자만 가능합니다.' })
