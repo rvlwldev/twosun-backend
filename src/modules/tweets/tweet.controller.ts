@@ -68,6 +68,30 @@ export class TweetsController {
       .then((tweets) => tweets.map((tweet) => new TweetSimpleResponse(tweet)));
   }
 
+  @ApiOperation({ summary: '트윗 좋아요', description: '특정 트윗에 좋아요를 누릅니다.' })
+  @ApiResponse({ status: 200, description: '좋아요 요청 성공' })
+  @ApiResponse({ status: 401, description: '인증 실패' })
+  @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
+  @ApiBearerAuth()
+  @Post(':id/like')
+  @UseGuards(GlobalAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async likeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
+    await this.service.likeTweet(req.user.id, tweetId);
+  }
+
+  @ApiOperation({ summary: '트윗 좋아요 취소', description: '특정 트윗의 좋아요를 취소합니다.' })
+  @ApiResponse({ status: 204, description: '좋아요 취소 요청 성공' })
+  @ApiResponse({ status: 401, description: '인증 실패' })
+  @ApiResponse({ status: 404, description: '트윗을 찾을 수 없음' })
+  @ApiBearerAuth()
+  @Delete(':id/like')
+  @UseGuards(GlobalAuthGuard)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async unlikeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
+    await this.service.unlikeTweet(req.user.id, tweetId);
+  }
+
   @ApiBearerAuth()
   @Patch(':id/content')
   @UseGuards(GlobalAuthGuard)

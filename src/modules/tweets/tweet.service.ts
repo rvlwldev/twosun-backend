@@ -1,11 +1,13 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { UserService } from '@/modules/users/user.service';
 import { CategoryService } from '@/modules/categories/category.service';
 
 import { Tweet } from './entities/tweet.entity';
+import { TweetLikeEvent } from './events/tweet-like.event';
 
 @Injectable()
 export class TweetService {
@@ -14,6 +16,7 @@ export class TweetService {
     private readonly datasource: DataSource,
     private readonly userService: UserService,
     private readonly categoryService: CategoryService,
+    private eventEmitter: EventEmitter2,
   ) {}
 
   private NOT_FOUND_ERROR_MESSAGE = '존재하지 않는 트윗입니다.';
@@ -79,6 +82,20 @@ export class TweetService {
     if (categoryId) query.andWhere('tweet.categoryId = :categoryId', { categoryId });
 
     return query.getMany() as Promise<(Tweet & { likeCount: number; commentCount: number })[]>;
+  }
+
+  async likeTweet(userId: string, tweetId: number): Promise<void> {
+    this.eventEmitter.emit(
+      'tweet.liked',
+      new TweetLikeEvent(userId, tweetId),
+    );
+  }
+
+  async unlikeTweet(userId: string, tweetId: number): Promise<void> {
+    this.eventEmitter.emit(
+      'tweet.unliked',
+      new TweetLikeEvent(userId, tweetId),
+    );
   }
 
   async updateTweetContent(userId: string, tweetId: number, content: string): Promise<Tweet> {

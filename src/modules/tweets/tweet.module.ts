@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { UserService } from '@/modules/users/user.service';
-import { CategoryService } from '@/modules/categories/category.service';
-import { User } from '@/modules/users/user.entity';
-import { Category } from '@/modules/categories/category.entity';
-import { Comment } from '@/modules/comments/entities/comment.entity';
+import { UserModule } from '@/modules/users/user.module';
+import { CategoryModule } from '@/modules/categories/category.module';
 
 import { Tweet } from './entities/tweet.entity';
 import { TweetImage } from './entities/tweet-image.entity';
@@ -13,11 +10,16 @@ import { Retweet } from './entities/retweet.entity';
 import { TweetLike } from './entities/tweet-like.entity';
 import { TweetsController } from './tweet.controller';
 import { TweetService } from './tweet.service';
+import { TweetEventListener } from './tweet.event.listener';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Tweet, TweetImage, Retweet, TweetLike, Comment, User, Category])],
+  imports: [
+    TypeOrmModule.forFeature([Tweet, TweetImage, Retweet, TweetLike]),
+    UserModule,
+    CategoryModule,
+  ],
   controllers: [TweetsController],
-  providers: [TweetService, UserService, CategoryService],
+  providers: [TweetService, TweetEventListener],
   exports: [TweetService],
 })
 export class TweetsModule {}
