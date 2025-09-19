@@ -2,7 +2,7 @@ import { Controller, Post, UseGuards, Body, HttpCode, HttpStatus, Request } from
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GlobalAuthGuard } from '@/modules/auth/guards/global-auth.guard';
 import { AuthService } from '@/modules/auth/auth.service';
-import { LoginRequest } from '@/modules/auth/auth.request';
+import { LoginRequest } from '@/modules/auth/auth-login.request';
 import { User } from '@/modules/users/user.entity';
 
 @ApiTags('사용자 인증')
