@@ -36,7 +36,7 @@ export class TweetSimpleResponse {
   @ApiProperty({ description: '댓글 수', example: 5 })
   commentCount: number;
 
-  constructor(tweet: Tweet, likeCount: number, commentCount: number) {
+  constructor(tweet: Tweet) {
     this.id = tweet.id;
     this.category = tweet.category;
     this.content = tweet.content;
@@ -44,7 +44,7 @@ export class TweetSimpleResponse {
     this.imageUrls = tweet.images.map((image) => image.url);
     this.createdAt = tweet.createdAt;
 
-    this.likeCount = likeCount;
-    this.commentCount = commentCount;
+    this.likeCount = (tweet as any).likeCount || 0;
+    this.commentCount = (tweet as any).commentCount || 0;
   }
 }

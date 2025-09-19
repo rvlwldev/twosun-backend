@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNotEmpty, MaxLength } from 'class-validator';
 
-export class TweetUpdateRequest {
+export class TweetUpdateContentRequest {
   @ApiProperty({
     description: '수정할 트윗 내용',
     example: '김형준 개발 과제 테스트 리팩토링중 ... ',

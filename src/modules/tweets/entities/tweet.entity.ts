@@ -1,13 +1,13 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
+  Index,
+  JoinColumn,
   ManyToOne,
   OneToMany,
-  JoinColumn,
-  Index,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
@@ -17,7 +17,7 @@ import { Retweet } from '@/modules/tweets/entities/retweet.entity';
 import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Entity('tweets')
-@Index(['categoryId', 'createdAt'])
+@Index(['category', 'createdAt'])
 @Index(['author', 'createdAt'])
 export class Tweet {
   @PrimaryGeneratedColumn()
@@ -52,12 +52,8 @@ export class Tweet {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  addAllImageUrls(imageUrls: string[]) {
-    if (!this.images) this.images = [];
-
-    if (!imageUrls || imageUrls.length === 0) return;
-
-    const images = imageUrls.map((url) => {
+  private toTweetImages(imageUrls: string[]) {
+    return imageUrls.map((url) => {
       const image = new TweetImage();
 
       image.url = url;
@@ -65,8 +61,18 @@ export class Tweet {
 
       return image;
     });
+  }
 
-    this.images.push(...images);
+  addAllImageUrls(imageUrls: string[]) {
+    if (!this.images) this.images = [];
+
+    if (!imageUrls || imageUrls.length === 0) return;
+
+    this.images.push(...this.toTweetImages(imageUrls));
+  }
+
+  updateAllImages(imageUrls: string[]) {
+    this.images = this.toTweetImages(imageUrls);
   }
 
   addRetweetByUser(user: User) {
