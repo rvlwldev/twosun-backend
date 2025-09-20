@@ -40,6 +40,9 @@ npm run start:dev
 
 애플리케이션이 성공적으로 시작되면 `http://localhost:3000/docs`에서 Swagger 문서를 확인할 수 있습니다.
 
+카테고리는 기본적으로 시딩했습니다.  
+회원가입, 로그인, swagger의 Authorize 이후 요청을 확인할 수 있습니다.
+
 ### 테스트
 
 E2E 테스트를 실행합니다.  
