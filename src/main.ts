@@ -1,7 +1,10 @@
 import { NestFactory, Reflector } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import * as process from 'node:process';
+import { CategoryService } from '@/modules/categories/category.service';
+import { SEED_CATEGORIES } from '@/modules/categories/category.constant';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -23,6 +26,18 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
+
+  console.log('Seeding categories...');
+  const categoryService = app.get(CategoryService);
+  const categories = await categoryService.findAll();
+  const categoryNames = new Set(categories.map((cat) => cat.name));
+  for (const seedCategory of SEED_CATEGORIES)
+    if (!categoryNames.has(seedCategory.name!))
+      await categoryService
+        .createCategory(seedCategory.name!)
+        .then((category) => console.log(`Category added (${category.name})`));
+
+  console.log('Category seeding complete.');
 
   await app.listen(process.env.PORT ?? 3000);
 }
