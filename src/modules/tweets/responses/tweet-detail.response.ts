@@ -50,8 +50,8 @@ export class TweetDetailResponse {
     this.category = tweet.category;
     this.createdAt = tweet.createdAt;
     this.updatedAt = tweet.updatedAt;
-    this.likesCount = (tweet as any).likesCount;
-    this.commentsCount = (tweet as any).commentsCount;
+    this.likesCount = tweet.likesCount || 0;
+    this.commentsCount = tweet.commentsCount || 0;
     this.author = {
       id: tweet.author.id,
       nickname: tweet.author.nickname,

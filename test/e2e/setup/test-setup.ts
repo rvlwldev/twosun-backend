@@ -9,7 +9,7 @@ interface TestSetup {
   dataSource: DataSource;
 }
 
-export const setupAppTest = async (): Promise<TestSetup> => {
+export const setupTest = async (): Promise<TestSetup> => {
   const module: TestingModule = await Test.createTestingModule({ imports: [AppModule] }).compile();
 
   const app = module.createNestApplication();
@@ -20,12 +20,3 @@ export const setupAppTest = async (): Promise<TestSetup> => {
 };
 
 export const teardownTest = async (app: INestApplication) => await app.close();
-
-export const initDatabase = async (dataSource: DataSource) => {
-  const entities = dataSource.entityMetadatas;
-
-  for (const entity of entities) {
-    const repository = dataSource.getRepository(entity.name);
-    await repository.query(`TRUNCATE TABLE ${entity.tableName}`);
-  }
-};

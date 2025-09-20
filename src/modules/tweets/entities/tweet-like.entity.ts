@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { User } from '@/modules/users/user.entity';
 import { Tweet } from './tweet.entity';
 
@@ -12,9 +12,15 @@ export class TweetLike {
   @JoinColumn({ name: 'tweetId' })
   tweet: Tweet;
 
+  @Column()
+  tweetId: number;
+
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
+
+  @Column()
+  userId: string;
 
   @CreateDateColumn()
   createdAt: Date;

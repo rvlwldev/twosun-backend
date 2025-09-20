@@ -8,11 +8,13 @@ import { CategoryService } from '@/modules/categories/category.service';
 
 import { Tweet } from './entities/tweet.entity';
 import { TweetLikeEvent } from './events/tweet-like.event';
+import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Injectable()
 export class TweetService {
   constructor(
-    @InjectRepository(Tweet) private readonly repo: Repository<Tweet>,
+    @InjectRepository(Tweet) private readonly tweetRepository: Repository<Tweet>,
+    @InjectRepository(TweetLike) private readonly repo: Repository<TweetLike>,
     private readonly datasource: DataSource,
     private readonly userService: UserService,
     private readonly categoryService: CategoryService,
@@ -34,7 +36,7 @@ export class TweetService {
   }
 
   async findTweetById(id: number): Promise<Tweet> {
-    const tweet = await this.repo.findOne({ where: { id }, relations: { author: true, images: true } });
+    const tweet = await this.tweetRepository.findOne({ where: { id }, relations: { author: true, images: true } });
 
     if (!tweet) throw new NotFoundException(this.NOT_FOUND_ERROR_MESSAGE);
 
@@ -42,7 +44,7 @@ export class TweetService {
   }
 
   async findTweetByIdWithAllRelations(id: number): Promise<Tweet & { likeCount: number; commentCount: number }> {
-    return this.repo
+    return this.tweetRepository
       .createQueryBuilder('tweet')
       .leftJoinAndSelect('tweet.author', 'author')
       .leftJoinAndSelect('tweet.category', 'category')
@@ -67,7 +69,7 @@ export class TweetService {
     page: number = 1,
     orderBy: string = 'desc',
   ): Promise<(Tweet & { likeCount: number; commentCount: number })[]> {
-    const query = this.repo
+    const query = this.tweetRepository
       .createQueryBuilder('tweet')
       .leftJoinAndSelect('tweet.author', 'author')
       .leftJoinAndSelect('tweet.category', 'category')
@@ -128,7 +130,7 @@ export class TweetService {
       throw new ForbiddenException('자신이 작성한 트윗만 삭제할 수 있습니다.');
     }
 
-    const result = await this.repo.softDelete(tweet.id);
+    const result = await this.tweetRepository.softDelete(tweet.id);
 
     if (result.affected == 0) {
       throw new NotFoundException('이미 삭제되었거나 존재하지 않는 트윗입니다.');

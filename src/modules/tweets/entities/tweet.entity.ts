@@ -39,10 +39,10 @@ export class Tweet {
   @OneToMany(() => Comment, (comment) => comment.tweet, { cascade: true })
   comments: Comment[];
 
-  // @OneToMany(() => Retweet, (retweet) => retweet.tweet, { cascade: true })
+  // @OneToMany(() => Retweet, (retweet) => retweet.tweet)
   // retweets: Retweet[];
 
-  @OneToMany(() => TweetLike, (like) => like.tweet, { cascade: true })
+  @OneToMany(() => TweetLike, (like) => like.tweet)
   likes: TweetLike[];
 
   @CreateDateColumn()
@@ -50,6 +50,9 @@ export class Tweet {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  likesCount?: number;
+  commentsCount?: number;
 
   private toTweetImages(imageUrls: string[]) {
     return imageUrls.map((url) => {

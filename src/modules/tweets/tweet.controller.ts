@@ -76,7 +76,7 @@ export class TweetController {
   @Post(':id/like')
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.OK)
-  async likeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
+  async postLike(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
     await this.service.likeTweet(req.user.id, tweetId);
   }
 
@@ -88,7 +88,7 @@ export class TweetController {
   @Delete(':id/like')
   @UseGuards(JwtGuard)
   @HttpCode(HttpStatus.NO_CONTENT)
-  async unlikeTweet(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
+  async deleteLike(@Param('id') tweetId: number, @Req() req: AuthenticatedRequest): Promise<void> {
     await this.service.unlikeTweet(req.user.id, tweetId);
   }
 
