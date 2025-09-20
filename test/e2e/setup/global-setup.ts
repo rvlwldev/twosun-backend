@@ -10,7 +10,7 @@ import { Category } from '@/modules/categories/category.entity';
 import { Tweet } from '@/modules/tweets/entities/tweet.entity';
 import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 import { TweetImage } from '@/modules/tweets/entities/tweet-image.entity';
-import { Comment } from '@/modules/comments/entities/comment.entity';
+import { Comment } from '@/modules/comments/comment.entity';
 
 module.exports = async () => {
   console.log('\nStarting MySQL container...');

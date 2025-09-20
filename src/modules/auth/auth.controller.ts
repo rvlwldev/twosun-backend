@@ -5,7 +5,7 @@ import { AuthService } from '@/modules/auth/auth.service';
 import { LoginRequest } from '@/modules/auth/auth-login.request';
 import { User } from '@/modules/users/user.entity';
 
-@ApiTags('사용자 인증')
+@ApiTags('사용자')
 @Controller('auth')
 export class AuthController {
   constructor(private service: AuthService) {}

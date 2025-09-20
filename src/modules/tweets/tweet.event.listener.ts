@@ -3,7 +3,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 import { TweetLike } from './entities/tweet-like.entity';
-import { TweetLikeEvent } from './events/tweet-like.event';
+import { TweetLikeEvent } from './tweet-like.event';
 import { WINSTON_MODULE_PROVIDER } from 'nest-winston';
 
 @Injectable()

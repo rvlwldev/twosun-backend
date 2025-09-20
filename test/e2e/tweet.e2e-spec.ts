@@ -19,7 +19,7 @@ describe('트윗 (Tweet) e2e 테스트', () => {
   let tweetLikeRepository: Repository<TweetLike>;
 
   let testUsers: User[];
-  let userTokens: { [key: string]: string } = {};
+  const userTokens: { [key: string]: string } = {};
   let testTweet: Tweet;
 
   beforeAll(async () => {

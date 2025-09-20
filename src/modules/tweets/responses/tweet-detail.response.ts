@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
 import { UserResponse } from '@/modules/users/user.response';
-import { CommentResponse } from '@/modules/comments/responses/comment.response';
+import { CommentResponse } from '@/modules/comments/comment.response';
 
 import { Tweet } from '../entities/tweet.entity';
 

@@ -8,7 +8,7 @@ import { TweetModule } from '@/modules/tweets/tweet.module';
 
 import { CommentController } from './comment.controller';
 import { CommentService } from './comment.service';
-import { Comment } from './entities/comment.entity';
+import { Comment } from './comment.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Comment, Tweet, User]), UserModule, TweetModule],

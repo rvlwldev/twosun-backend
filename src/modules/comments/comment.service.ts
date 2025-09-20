@@ -5,7 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { TweetService } from '@/modules/tweets/tweet.service';
 import { UserService } from '@/modules/users/user.service';
 
-import { Comment } from './entities/comment.entity';
+import { Comment } from './comment.entity';
 
 @Injectable()
 export class CommentService {

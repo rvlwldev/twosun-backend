@@ -18,7 +18,7 @@ import type { AuthenticatedRequest } from '@/modules/auth/auth-authenticated.req
 
 import { CommentService } from './comment.service';
 import { CreateCommentRequest } from './requests/create-comment.request';
-import { CommentResponse } from './responses/comment.response';
+import { CommentResponse } from './comment.response';
 import { UpdateCommentRequest } from '@/modules/comments/requests/update-comment.request';
 
 @ApiTags('댓글')

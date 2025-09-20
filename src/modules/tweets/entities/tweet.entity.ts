@@ -12,7 +12,7 @@ import {
 import { User } from '@/modules/users/user.entity';
 import { Category } from '@/modules/categories/category.entity';
 import { TweetImage } from './tweet-image.entity';
-import { Comment } from '@/modules/comments/entities/comment.entity';
+import { Comment } from '@/modules/comments/comment.entity';
 import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Entity('tweets')

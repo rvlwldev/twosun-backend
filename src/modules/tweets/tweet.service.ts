@@ -7,7 +7,7 @@ import { UserService } from '@/modules/users/user.service';
 import { CategoryService } from '@/modules/categories/category.service';
 
 import { Tweet } from './entities/tweet.entity';
-import { TweetLikeEvent } from './events/tweet-like.event';
+import { TweetLikeEvent } from './tweet-like.event';
 import { TweetLike } from '@/modules/tweets/entities/tweet-like.entity';
 
 @Injectable()
